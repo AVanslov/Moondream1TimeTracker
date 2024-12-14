@@ -17,7 +17,7 @@ TASK_DESCRIPTION = (
     'Tell me vibe of an outfit'
     'Tell me emotional tone of an outfit'
 )  # Описание задачи
-OUTPUT_CSV = 'performance_metrics.csv'  # Имя выходного CSV файла
+OUTPUT_CSV = 'perfomance_mode_metrics.csv'  # Имя выходного CSV файла
 
 # Initialize Model
 MODEL_PATH = './moondream-0_5b-int8.mf.gz'

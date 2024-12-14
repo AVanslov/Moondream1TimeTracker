@@ -35,14 +35,21 @@
 
 
 ## Общие данные
-**При тестах локально:**
+**При тестах локально в режиме balanced (средняя производительность локального компьютера):**
 
 Task Execution Statistics:
 Minimum Time: 5.90 seconds
 Average Time: 13.58 seconds
 Maximum Time: 68.50 seconds
 
-В [данной google таблице](https://docs.google.com/spreadsheets/d/1XljgI5tSydZUFfA2oEotvUn_NAvlK6QawdEpxxxvkCE/edit?usp=sharing) на листе LocalTests вы найдете подробный отчет о локальных тестах.
+**При тестах локально в режиме perfomance (средняя производительность локального компьютера):**
+
+Task Execution Statistics:
+Minimum Time: 5.87 seconds
+Average Time: 13.13 seconds
+Maximum Time: 73.63 seconds
+
+В [данной google таблице](https://docs.google.com/spreadsheets/d/1XljgI5tSydZUFfA2oEotvUn_NAvlK6QawdEpxxxvkCE/edit?usp=sharing) на листах LocalTestsBalaced и LocalTestsPerfomance или в файлах csv [perfomance mode](/perfomance_mode_metrics.csv), [balanced mode](/balance_mode_metrics.csv) вы найдете подробный отчет о локальных тестах.
 
 ## Рассчет времени выполнения полного датасета на сервере
 
@@ -103,5 +110,10 @@ Mem:          16Gi        4Gi        8Gi       0.5Gi      4Gi         10Gi
 | **CPU(s)**       | 32 (32 threads total)                      | `SERVER_CPU_CORES`   |
 | **IOPS**         | 1500.00 IOPS                               | `SERVER_IOPS`        |
 
+И если основываться на данных локального теста в режиме balanced - средняя производительность, где среднее время обработки одной фотографии - 13.58 секунд
+
 **Заняло бы: 78.96 часов**
-# Moondream1TimeTracker
+
+То же самое, но если проводить локальный тест в режиме perfomence - максимальная производитенльность, где среднее время обработки одной фотографии - 13.13 секунд
+
+**Заняло бы: 76.35 часов**

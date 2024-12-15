@@ -35,6 +35,8 @@
 
 
 ## Общие данные
+
+### Тесты
 **При тестах локально в режиме balanced (средняя производительность локального компьютера):**
 
 Task Execution Statistics:
@@ -48,6 +50,13 @@ Task Execution Statistics:
 Minimum Time: 5.87 seconds
 Average Time: 13.13 seconds
 Maximum Time: 73.63 seconds
+
+**При тестах локально в режиме perfomance и текст задания разделен запятыми(средняя производительность локального компьютера):**
+
+Task Execution Statistics:
+Minimum Time: 5.31 seconds
+Average Time: 13.08 seconds
+Maximum Time: 70.21 seconds
 
 В [данной google таблице](https://docs.google.com/spreadsheets/d/1XljgI5tSydZUFfA2oEotvUn_NAvlK6QawdEpxxxvkCE/edit?usp=sharing) на листах LocalTestsBalaced и LocalTestsPerfomance или в файлах csv [perfomance mode](/perfomance_mode_metrics.csv), [balanced mode](/balance_mode_metrics.csv) вы найдете подробный отчет о локальных тестах.
 
@@ -117,3 +126,5 @@ Mem:          16Gi        4Gi        8Gi       0.5Gi      4Gi         10Gi
 То же самое, но если проводить локальный тест в режиме perfomence - максимальная производитенльность, где среднее время обработки одной фотографии - 13.13 секунд
 
 **Заняло бы: 76.35 часов**
+
+**Заняло бы, если текст задания разделен запятыми: 76.06 часов**

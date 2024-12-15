@@ -14,7 +14,7 @@ SERVER_IOPS = 1500.00          # IOPS сервера
 LOCAL_DATASET_SIZE = 45       # Количество изображений в локальном датасете
 FULL_DATASET_SIZE = 230000      # Количество изображений в полном датасете
 
-LOCAL_PER_IMAGE_TIME = 13.13       # Среднее время обработки одного изображения локально (в секундах)
+LOCAL_PER_IMAGE_TIME = 13.08       # Среднее время обработки одного изображения локально (в секундах)
 
 
 def calculate_server_time(local_per_image_time, local_specs, server_specs, local_dataset_size, full_dataset_size):

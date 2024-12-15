@@ -8,16 +8,16 @@ from PIL import Image
 #  Configurations
 IMAGE_FOLDER = './images'  # Путь к папке с фотографиями
 TASK_DESCRIPTION = (
-    'Tell me Context of an outfit'
-    'Tell me Theme of an outfit'
-    'Tell me Collection Notes of an outfit'
-    'Tell me Garment of an outfit'
-    'Tell me Garment style of an outfit'
-    'Tell me Design elements of an outfit'
-    'Tell me vibe of an outfit'
-    'Tell me emotional tone of an outfit'
+    'Tell me Context of an outfit, '
+    'Tell me Theme of an outfit, '
+    'Tell me Collection Notes of an outfit, '
+    'Tell me Garment of an outfit, '
+    'Tell me Garment style of an outfit, '
+    'Tell me Design elements of an outfit, '
+    'Tell me vibe of an outfit, '
+    'Tell me emotional tone of an outfit.'
 )  # Описание задачи
-OUTPUT_CSV = 'perfomance_mode_metrics.csv'  # Имя выходного CSV файла
+OUTPUT_CSV = 'task_with_commas_metrics.csv'  # Имя выходного CSV файла
 
 # Initialize Model
 MODEL_PATH = './moondream-0_5b-int8.mf.gz'

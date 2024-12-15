@@ -1,139 +1,150 @@
-# Трекер для замера времения генерации описания фотографий в модели Moondream1
+# Documentation for the Image Processing Module Using the Moondream1 Model
 
-## Данные компьютера
-Запуск модели произведен на локальном компьютере Lenovo IdeaPad Slim 3 15ABR8 под операционной системой Linux Ubuntu 22.04.5 LTS 64-bit
+## Overview
 
-| Parameter                     | Value                                                                 |
-| ----------------------------- | --------------------------------------------------------------------- |
-| **Processor**                  | AMD® Ryzen 5 7530U with Radeon Graphics × 12                         |
-| **Architecture**               | x86_64                                                              |
-| **CPU(s)**                     | 12 (12 threads total)                                                |
-| **Core(s) per socket**         | 6 (6 physical cores)                                                 |
-| **Thread(s) per core**         | 2 (Hyper-Threading technology)                                       |
-| **CPU max MHz**                | 4546.0000 MHz (4.5 GHz)                                              |
-| **CPU min MHz**                | 400.0000 MHz (0.4 GHz, power saving mode)                            |
-| **L1d Cache**                  | 192 KiB                                                              |
-| **L1i Cache**                  | 192 KiB                                                              |
-| **L2 Cache**                   | 3 MiB                                                                |
-| **L3 Cache**                   | 16 MiB                                                               |
-| **Virtualization**             | AMD-V                                                               |
-| **CPU Flags**                  | avx, avx2, sse4_1, sse4_2, fma                                      |
-| **NUMA**                       | NUMA node(s): 1                                                      |
-| **Memory**                     | 16.0 GiB                                                            |
-| **Memory Type**                | DDR4                                                                |
-| **Memory Speed**               | 3200 MT/s                                                            |
-| **Graphics**                   | RENOIR (LLVM 15.0.7, DRM 3.57, 6.8.0-49-generic)                     |
-| **VGA Controller**             | Advanced Micro Devices, Inc. [AMD/ATI] Barcelo (rev c5)              |
-| **OpenGL Renderer**            | RENOIR (LLVM 15.0.7, DRM 3.57, 6.8.0-49-generic)                     |
-| **Number of Platforms**        | 0 FLOPS                                                              |
-| **Disk Type**                  | SSD                                                                  |
-| **Disk Model**                 | SAMSUNG MZAL41T0HBLB-00BL2                                            |
-| **IOPS (Cached Reads)**        | 41406 MB in 1.97 seconds = 21021.80 MB/sec                          |
-| **IOPS (Buffered Reads)**      | 2428 MB in 3.00 seconds = 809.00 MB/sec                             |
-| **Operating System**           | Linux han-solo 6.8.0-49-generic #49~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC |
-| **Kernel**                     | 6.8.0-49-generic #49~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC             |
+This module is designed to process images using the Moondream1 model and return specific information about them. It executes tasks based on text commands provided in the `TASK_DESCRIPTION` constant in the `constants.py` file. You can specify a list of commands, not just a single one, allowing flexibility in how the images are analyzed or described.
 
+### Key Features:
+- **Task Customization:** Define specific tasks or questions for image analysis by setting the `TASK_DESCRIPTION` constant.
+- **Message Broker Support:** The module uses message brokers for efficient parallel task execution.
+- **Performance Utilities:** Includes utilities for performance analysis:
+  - **`min_max_avg_time.py`:** Calculates the minimum, maximum, and average processing times based on CSV output.
+  - **`ServerCalculator.py`:** Estimates server-side processing speed based on local dataset metrics and server specifications.
+- **Makefile Automation:** A `Makefile` is included to automate setup, downloading the model, and running the module on an Ubuntu server.
 
-## Общие данные
+---
 
-### Тесты
-**При тестах локально в режиме balanced (средняя производительность локального компьютера):**
+## Installation and Deployment
 
-Task Execution Statistics:
-Minimum Time: 5.90 seconds
-Average Time: 13.58 seconds
-Maximum Time: 68.50 seconds
+### 1. Using the Makefile
 
-**При тестах локально в режиме perfomance (средняя производительность локального компьютера):**
+For Ubuntu servers, you can use the provided `Makefile` to automate the installation and deployment process:
 
-Task Execution Statistics:
-Minimum Time: 5.87 seconds
-Average Time: 13.13 seconds
-Maximum Time: 73.63 seconds
+1. **Install Required Dependencies:**
+   ```bash
+   make setup
+   ```
+2. **Download and Extract the Model:**
+   ```bash
+   make model
+   ```
+3. **Start Redis Server:**
+   ```bash
+   make redis
+   ```
+4. **Run the Module:**
+   ```bash
+   make run
+   ```
 
-**При тестах локально в режиме perfomance и текст задания разделен запятыми(средняя производительность локального компьютера):**
+### 2. Manual Setup
 
-Task Execution Statistics:
-Minimum Time: 5.31 seconds
-Average Time: 13.08 seconds
-Maximum Time: 70.21 seconds
+If you prefer not to use the `Makefile`, follow these steps. These instructions mirror the `Makefile` commands for consistency:
 
-**При тестах локально в режиме perfomance С брокерами:**
+1. **Install Required Dependencies:**
+   ```bash
+   apt-get update && apt-get install -y redis-server
+   pip3 install -r requirements.txt
+   ```
+2. **Download and Extract the Model:**
+   ```bash
+   wget https://download.moondream.ai/models/moondream-0_5b-int8.mf.gz
+   mkdir -p model
+   gzip -d -c moondream-0_5b-int8.mf.gz > model/moondream-0_5b-int8.model
+   ```
+3. **Start Redis Server:**
+   ```bash
+   systemctl start redis
+   ```
+4. **Run Celery Workers:**
+   ```bash
+   celery -A tasks worker --loglevel=info --concurrency=16
+   ```
+5. **Run the Script:**
+   ```bash
+   python run.py
+   ```
 
-Minimum Time: 16.34 seconds
-Average Time: 25.56 seconds
-Maximum Time: 35.85 seconds
+---
 
-В [данной google таблице](https://docs.google.com/spreadsheets/d/1XljgI5tSydZUFfA2oEotvUn_NAvlK6QawdEpxxxvkCE/edit?usp=sharing) на листах LocalTestsBalaced и LocalTestsPerfomance или в файлах csv [perfomance mode](/perfomance_mode_metrics.csv), [balanced mode](/balance_mode_metrics.csv) вы найдете подробный отчет о локальных тестах.
+## System Requirements
 
-## Рассчет времени выполнения полного датасета на сервере
+### Minimum Server Specifications:
+- **Processor:** CPU with at least 32 cores (to support 16 workers effectively).
+- **FLOPS:** 10 TFLOPS (Floating Point Operations per Second).
+- **IOPS:** 1500 IOPS (Input/Output Operations per Second).
+- **Memory:** At least 64 GB RAM.
+- **Disk:** High-speed SSD.
 
-В файле [./ServerCalculator.py](ServerCalculator.py) написан скрипт, которые на основе данных локального компьютера, на котором тестируется часть датасета, на основе данных сервера и на средней скорости обработки одного изображения локально расчитывается время обработки всего датасета на сервере.
+---
 
-### System Specifications Used in Script
+## Preparing Your Dataset
 
-| Parameter       | Value                                      | Constant Name        |
-| --------------- | ------------------------------------------ | -------------------- |
-| **CPU(s)**      | 12 (12 threads total)                      | `LOCAL_CPU_CORES`    |
-| **IOPS (Cached Reads)** | 41406 MB in 1.97 seconds = 21021.80 MB/sec | `LOCAL_IOPS`         |
-| **IOPS (Buffered Reads)** | 2428 MB in 3.00 seconds = 809.00 MB/sec  | `LOCAL_IOPS`         |
-| **FLOPS**        | 4.5 TFLOPS (примерная производительность процессора)  | `LOCAL_FLOPS`        |
+Before starting the module, place the images you want to process in the `images` directory in the project root. The module will automatically process all images in this directory.
 
+---
 
-Для работы скрипта нужно зайти на сервер и выполнить в нем команды для получения данных о максимальной производительности процессора, числе ядер процессора, скорости ввода-вывода за секунду, данные оперативной памяти.
+## Performance Estimation
 
-**Например, так:**
+### Estimating Processing Time on a Server
 
-### lscpu:
+Use the `ServerCalculator.py` script to estimate the time required to process a dataset on a server.
 
+1. **Run the Script:**
+   ```bash
+   python ServerCalculator.py
+   ```
+2. **Inputs:**
+   - Local machine specifications (CPU, FLOPS, IOPS).
+   - Average processing time per image locally.
+   - Server specifications.
+   - Dataset size.
+3. **Output:**
+   The script will provide an estimated time in hours to process the dataset on the server.
+
+### Example:
+- **Local Machine:**
+  - 12 cores, 4.5 TFLOPS, 809 IOPS.
+  - Average time per image: 25.56 seconds.
+- **Server Specifications:**
+  - 32 cores, 10 TFLOPS, 1500 IOPS.
+
+Estimated processing time for 230,000 images: ~9.29 hours.
+
+---
+
+## Additional Utilities
+
+### 1. `min_max_avg_time.py`
+Analyze the performance of image processing tasks based on CSV logs:
+
+- **Input:** CSV file generated by the module.
+- **Output:** Minimum, maximum, and average processing times.
+
+### Usage:
+```bash
+python min_max_avg_time.py --csv-file <path_to_csv>
 ```
-bash
-Copy code
-CPU(s):              16
-Thread(s) per core:  2
-Core(s) per socket:  8
-CPU max MHz:         3500.00
-CPU min MHz:         800.00
-```
 
-### iostat -dx 1:
+---
 
-```
-bash
-Copy code
-Device            r/s     w/s     rkB/s   wkB/s   await  svctm  %util
-sda              20.0    15.0    1200    800     10.0   1.5    5.0
-```
+## Configurations
 
-### free -h:
+### Constants in `constants.py`
+- **`TASK_DESCRIPTION`:** Define the tasks or questions the module should process.
+  Example:
+  ```python
+  TASK_DESCRIPTION = ["Describe the outfit", "What is the primary color?"]
+  ```
+- **`MODEL_PATH`:** Path to the Moondream1 model.
 
-```
-bash
-Copy code
-total        used        free      shared  buff/cache   available
-Mem:          16Gi        4Gi        8Gi       0.5Gi      4Gi         10Gi
-```
+---
 
-## Пример расчета времени обработки всего датасета на сервере
-Например, оценочное время обработки датасета из 230 000 фотографий на сервере со следующими данными
+## Troubleshooting
 
-#### Server Specifications Used in Script
-
-| Parameter       | Value                                      | Constant Name        |
-| --------------- | ------------------------------------------ | -------------------- |
-| **FLOPS**        | 10 TFLOPS (примерная производительность процессора) | `SERVER_FLOPS`       |
-| **CPU(s)**       | 32 (32 threads total)                      | `SERVER_CPU_CORES`   |
-| **IOPS**         | 1500.00 IOPS                               | `SERVER_IOPS`        |
-
-И если основываться на данных локального теста в режиме balanced - средняя производительность, где среднее время обработки одной фотографии - 13.58 секунд
-
-**Заняло бы: 78.96 часов**
-
-То же самое, но если проводить локальный тест в режиме perfomence - максимальная производитенльность, где среднее время обработки одной фотографии - 13.13 секунд
-
-**Заняло бы: 76.35 часов**
-
-**Заняло бы, если текст задания разделен запятыми: 76.06 часов**
-
-
-**Оценочное время обработки полного датасета на сервере (с брокерами и celery с 16 воркерами:): 9.29 часов**
+1. **Celery Not Starting:** Ensure Redis is running.
+   ```bash
+   redis-server
+   ```
+2. **Performance Issues:** Verify the server meets the recommended specifications.
+3. **Model Errors:** Confirm the `MODEL_PATH` is correctly set to the extracted Moondream1 model directory.

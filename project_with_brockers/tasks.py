@@ -1,6 +1,6 @@
 """
 Используйте
-celery -A tasks worker --loglevel=info --concurrency=16
+celery -A tasks worker --loglevel=info --concurrency=N, где N = колличество ядер / 2
 Чтобы не перенагружать систему
 """
 import csv
@@ -25,6 +25,7 @@ model = md.vl(model=MODEL_PATH)  # Загрузка модели
 # Глобальная блокировка для защиты записи в CSV
 lock = Lock()
 
+
 def resize_image(image, max_width=800, max_height=600):
     """Функция для уменьшения изображения до заданных размеров."""
     width, height = image.size
@@ -39,6 +40,7 @@ def resize_image(image, max_width=800, max_height=600):
 
     return image
 
+
 def is_image_processed(image_path):
     """Проверяет, было ли изображение уже обработано."""
     if not os.path.isfile(OUTPUT_CSV):
@@ -48,9 +50,11 @@ def is_image_processed(image_path):
         reader = csv.reader(csv_file)
         return any(row[0] == image_path for row in reader)
 
+
 def normalize_row(row):
     """Удаляет пробелы и нормализует строку для проверки уникальности."""
     return tuple(str(item).strip() for item in row)
+
 
 def write_to_csv(rows, header=None):
     """Функция для пакетной записи в CSV с блокировкой."""
@@ -83,6 +87,7 @@ def write_to_csv(rows, header=None):
             writer.writerows(new_rows)
 
             fcntl.flock(csv_file, fcntl.LOCK_UN)  # Снимаем блокировку файла
+
 
 @app.task(bind=True, max_retries=3, default_retry_delay=60, time_limit=600, soft_time_limit=300)
 def process_image(self, image_path):
@@ -125,6 +130,7 @@ def process_image(self, image_path):
         print(f"Error processing image {image_path}: {e}")
         raise self.retry(exc=e)  # Повтор задачи при ошибке
 
+
 @app.task
 def process_batch(image_batch):
     """Обработка пакета изображений"""
@@ -137,6 +143,7 @@ def process_batch(image_batch):
         start_time = time.time()
         process_image(image_path=image_path)
         print(f"Image batch processing time: {time.time() - start_time:.2f} seconds")
+
 
 @app.task
 def start_processing():

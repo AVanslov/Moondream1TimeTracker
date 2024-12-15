@@ -7,17 +7,17 @@ LOCAL_FLOPS = 4.5 * 10**12       # 4.5 TFLOPS
 LOCAL_CPU_CORES = 12            # 12 потоков
 LOCAL_IOPS = 809.00             # IOPS диска локальной машины
 
-SERVER_FLOPS = 10 * 10**12      # 10 TFLOPS
-SERVER_CPU_CORES = 32          # 32 потока
-SERVER_IOPS = 1500.00          # IOPS сервера
+SERVER_FLOPS = 1.408 * 10**12      # 10 TFLOPS
+SERVER_CPU_CORES = 6          # N потока
+SERVER_IOPS = 10000.00          # IOPS сервера
 
 LOCAL_DATASET_SIZE = 45       # Количество изображений в локальном датасете
 FULL_DATASET_SIZE = 230000      # Количество изображений в полном датасете
 
-LOCAL_PER_IMAGE_TIME = 25.56      # Среднее время обработки одного изображения локально (в секундах)
+LOCAL_PER_IMAGE_TIME = 25.08    # Среднее время обработки одного изображения локально (в секундах)
 
 USE_BROCKERS = True  # если используем брокеры, расчет будет идти с учетом параллельности выполнения задач
-CONCURRENCY = 16  # Устанавливаем количество одновременно работающих воркеров
+CONCURRENCY = 3  # Устанавливаем количество одновременно работающих воркеров
 
 
 def calculate_server_time(local_per_image_time, local_specs, server_specs, local_dataset_size, full_dataset_size):
@@ -53,7 +53,7 @@ def calculate_server_time(local_per_image_time, local_specs, server_specs, local
 
     return estimated_server_time
 
-# ===== Пример использования =====
+
 if __name__ == "__main__":
     # Характеристики локальной системы
     local_specs = {

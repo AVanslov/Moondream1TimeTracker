@@ -1,7 +1,7 @@
 import csv
 
 # Путь к вашему CSV файлу
-INPUT_CSV = 'metrics/with_brockers_metrics.csv'
+INPUT_CSV = './metrics/metrics.csv'
 
 
 def calculate_execution_times(csv_file):

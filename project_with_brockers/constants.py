@@ -20,10 +20,7 @@ TASK_DESCRIPTION = [
 MODEL_PATH = '../moondream-0_5b-int8.mf.gz'
 
 # Выходной CSV файл
-OUTPUT_CSV = 'with_brockers_metrics.csv'
-
-# Максимальный размер изображения
-MAX_IMAGE_SIZE = 1024  # Максимальный размер изображения
+OUTPUT_CSV = '../metrics/metrics.csv'
 
 # Размер пакета изображений
 BATCH_SIZE = 4  # Размер пакета изображений для обработки

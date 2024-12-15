@@ -14,7 +14,10 @@ SERVER_IOPS = 1500.00          # IOPS сервера
 LOCAL_DATASET_SIZE = 45       # Количество изображений в локальном датасете
 FULL_DATASET_SIZE = 230000      # Количество изображений в полном датасете
 
-LOCAL_PER_IMAGE_TIME = 13.08       # Среднее время обработки одного изображения локально (в секундах)
+LOCAL_PER_IMAGE_TIME = 25.56      # Среднее время обработки одного изображения локально (в секундах)
+
+USE_BROCKERS = True  # если используем брокеры, расчет будет идти с учетом параллельности выполнения задач
+CONCURRENCY = 16  # Устанавливаем количество одновременно работающих воркеров
 
 
 def calculate_server_time(local_per_image_time, local_specs, server_specs, local_dataset_size, full_dataset_size):
@@ -38,8 +41,15 @@ def calculate_server_time(local_per_image_time, local_specs, server_specs, local
         (server_specs['iops'] / local_specs['iops'])
     )
 
-    # Оценить время обработки полного датасета на сервере
-    estimated_server_time = (local_per_image_time / performance_ratio) * full_dataset_size
+    estimated_server_time = 0
+
+    if USE_BROCKERS:
+        # Учитываем параллельность
+        effective_time_per_image = local_per_image_time / performance_ratio
+        estimated_server_time = (effective_time_per_image * full_dataset_size) / CONCURRENCY
+    else:
+        # Оценить время обработки полного датасета на сервере
+        estimated_server_time = (local_per_image_time / performance_ratio) * full_dataset_size
 
     return estimated_server_time
 

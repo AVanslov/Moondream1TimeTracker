@@ -58,6 +58,12 @@ Minimum Time: 5.31 seconds
 Average Time: 13.08 seconds
 Maximum Time: 70.21 seconds
 
+**При тестах локально в режиме perfomance С брокерами:**
+
+Minimum Time: 16.34 seconds
+Average Time: 25.56 seconds
+Maximum Time: 35.85 seconds
+
 В [данной google таблице](https://docs.google.com/spreadsheets/d/1XljgI5tSydZUFfA2oEotvUn_NAvlK6QawdEpxxxvkCE/edit?usp=sharing) на листах LocalTestsBalaced и LocalTestsPerfomance или в файлах csv [perfomance mode](/perfomance_mode_metrics.csv), [balanced mode](/balance_mode_metrics.csv) вы найдете подробный отчет о локальных тестах.
 
 ## Рассчет времени выполнения полного датасета на сервере
@@ -128,3 +134,6 @@ Mem:          16Gi        4Gi        8Gi       0.5Gi      4Gi         10Gi
 **Заняло бы: 76.35 часов**
 
 **Заняло бы, если текст задания разделен запятыми: 76.06 часов**
+
+
+**Оценочное время обработки полного датасета на сервере (с брокерами и celery с 16 воркерами:): 9.29 часов**

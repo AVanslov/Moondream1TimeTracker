@@ -5,14 +5,6 @@ IMAGE_FOLDER = '../images'
 
 # Описание задач
 TASK_DESCRIPTION = [
-    # 'Tell me Context of an outfit',
-    # 'Tell me Theme of an outfit',
-    # 'Tell me Collection Notes of an outfit',
-    # 'Tell me Garment of an outfit',
-    # 'Tell me Garment style of an outfit',
-    # 'Tell me Design elements of an outfit',
-    # 'Tell me vibe of an outfit',
-    # 'Tell me emotional tone of an outfit',
     'Tell me about the outfit'
 ]
 

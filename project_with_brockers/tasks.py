@@ -136,7 +136,7 @@ def start_processing():
     image_paths = [
         os.path.join(IMAGE_FOLDER, name)
         for name in os.listdir(IMAGE_FOLDER)
-        if os.path.isfile(os.path.join(IMAGE_FOLDER, name))
+        if os.path.isfile(os.path.join(IMAGE_FOLDER, name)) and name.lower().endswith(('.jpg', '.png', '.jpeg'))
     ]
     batches = [image_paths[i:i + BATCH_SIZE] for i in range(0, len(image_paths), BATCH_SIZE)]
 
